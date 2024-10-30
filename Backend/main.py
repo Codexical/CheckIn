@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-
-import db
+from db import Database
 
 app = FastAPI()
+
+db = Database("students.db")
 
 
 class Item(BaseModel):
@@ -31,11 +32,11 @@ def create_table():
 def insert_db(item: Item):
     item_dict = item.dict()
     result = db.insert_data(
-        item_dict['name'],
-        item_dict['school'],
-        item_dict['gender'],
-        item_dict['phone'],
-        item_dict['class_num']
+        item_dict["name"],
+        item_dict["school"],
+        item_dict["gender"],
+        item_dict["phone"],
+        item_dict["class_num"],
     )
 
     if not result:
