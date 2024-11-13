@@ -10,6 +10,7 @@ db = Database("CheckIn.db")
 class Student(BaseModel):
     id: int
     name: str
+    course_id: int
     birth: str
     school_name: str
     school_grade: str
@@ -42,24 +43,33 @@ def create_course(course: Course):
     input: course_info
     output: course_id
     """
+    course_info = course.model_dump()
+    course_id = db.create_course(course_info)
+    return {"course_id": course_id}
 
 
 @app.post("/course/edit", tags=["course"])
-def edit_course():
+def edit_course(course: Course):
     """
     TODO
     input: course_id, course_info
     output: success/fail
     """
+    course_info = course.model_dump()
+    success = db.edit_course(course_info)
+    return {"success": success}
 
 
 @app.post("/course/delete", tags=["course"])
-def delete_course():
+def delete_course(course: Course):
     """
     TODO
     input: course_id
     output: success/fail
     """
+    id = course.model_dump()["id"]
+    success = db.delete_course(id)
+    return {"success": success}
 
 
 @app.get("/course/list", tags=["course"])
@@ -68,15 +78,20 @@ def list_course():
     TODO
     output: course_list
     """
+    course_list = db.list_courses()
+    return {"course_list": course_list}
 
 
 @app.post("/course/students", tags=["course"])
-def list_students():
+def list_students(course: Course):
     """
     TODO
     input: course_id
     output: student_list
     """
+    id = course.model_dump()["id"]
+    student_list = db.list_students(id)
+    return {"student_list": student_list}
 
 
 @app.post("/student/create", tags=["student"])
