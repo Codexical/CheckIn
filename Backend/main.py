@@ -4,15 +4,30 @@ from db import Database
 
 app = FastAPI()
 
-db = Database("students.db")
+db = Database("CheckIn.db")
 
 
-class Item(BaseModel):
+class Student(BaseModel):
+    id: int
     name: str
-    school: str
-    gender: str
+    birth: str
+    school_name: str
+    school_grade: str
+    parent_name: str
+    mobile: str
     phone: str
-    class_num: int
+
+
+class Course(BaseModel):
+    id: int
+    course_name: str
+    teacher_id: int
+    course_time: str
+
+
+class Teacher(BaseModel):
+    id: int
+    name: str
 
 
 @app.get("/")
@@ -20,34 +35,10 @@ def root():
     return {"message": "Hello World"}
 
 
-@app.get("/create-table")
-def create_table():
-    result = create_table
-    if not result:
-        return {"message": "Fail, check data"}
-    return {"message": "Success"}
-
-
-@app.post("/insert-student")
-def insert_db(item: Item):
-    item_dict = item.dict()
-    result = db.insert_data(
-        item_dict["name"],
-        item_dict["school"],
-        item_dict["gender"],
-        item_dict["phone"],
-        item_dict["class_num"],
-    )
-
-    if not result:
-        return {"message": "Fail, check data"}
-    return {"message": "Success"}
-
-
 @app.post("/course/create", tags=["course"])
-def create_course():
-    """ 
-    TODO 
+def create_course(course: Course):
+    """
+    TODO
     input: course_info
     output: course_id
     """
@@ -55,8 +46,8 @@ def create_course():
 
 @app.post("/course/edit", tags=["course"])
 def edit_course():
-    """ 
-    TODO 
+    """
+    TODO
     input: course_id, course_info
     output: success/fail
     """
@@ -64,8 +55,8 @@ def edit_course():
 
 @app.post("/course/delete", tags=["course"])
 def delete_course():
-    """ 
-    TODO 
+    """
+    TODO
     input: course_id
     output: success/fail
     """
@@ -73,16 +64,16 @@ def delete_course():
 
 @app.get("/course/list", tags=["course"])
 def list_course():
-    """ 
-    TODO 
+    """
+    TODO
     output: course_list
     """
 
 
 @app.post("/course/students", tags=["course"])
 def list_students():
-    """ 
-    TODO 
+    """
+    TODO
     input: course_id
     output: student_list
     """
@@ -90,8 +81,8 @@ def list_students():
 
 @app.post("/student/create", tags=["student"])
 def create_student():
-    """ 
-    TODO 
+    """
+    TODO
     input: student_info
     output: student_id
     """
@@ -99,8 +90,8 @@ def create_student():
 
 @app.post("/student/edit", tags=["student"])
 def edit_student():
-    """ 
-    TODO 
+    """
+    TODO
     input: student_id, student_info
     output: success/fail
     """
@@ -108,8 +99,8 @@ def edit_student():
 
 @app.post("/student/delete", tags=["student"])
 def delete_student():
-    """ 
-    TODO 
+    """
+    TODO
     input: student_id
     output: success/fail
     """
@@ -117,8 +108,8 @@ def delete_student():
 
 @app.post("/student/assign-course", tags=["student"])
 def assign_course():
-    """ 
-    TODO 
+    """
+    TODO
     input: student_id, course_id
     output: success/fail
     """
@@ -126,8 +117,8 @@ def assign_course():
 
 @app.post("/student/roll-call", tags=["student"])
 def roll_call():
-    """ 
-    TODO 
+    """
+    TODO
     input: student_id, course_id
     output: success/fail
     """
@@ -135,8 +126,8 @@ def roll_call():
 
 @app.post("/student/roll-call-history", tags=["student"])
 def roll_call_history():
-    """ 
-    TODO 
+    """
+    TODO
     input: student_id, course_id
     output: roll_call_history
     """
@@ -144,8 +135,8 @@ def roll_call_history():
 
 @app.post("/teacher/create", tags=["teacher"])
 def create_teacher():
-    """ 
-    TODO 
+    """
+    TODO
     input: teacher_info
     output: teacher_id
     """
@@ -153,8 +144,8 @@ def create_teacher():
 
 @app.post("/teacher/edit", tags=["teacher"])
 def edit_teacher():
-    """ 
-    TODO 
+    """
+    TODO
     input: teacher_id, teacher_info
     output: success/fail
     """
@@ -162,8 +153,8 @@ def edit_teacher():
 
 @app.post("/teacher/delete", tags=["teacher"])
 def delete_teacher():
-    """ 
-    TODO 
+    """
+    TODO
     input: teacher_id
     output: success/fail
     """
