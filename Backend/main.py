@@ -36,7 +36,7 @@ def root():
     return {"message": "Hello World"}
 
 
-@app.post("/course/create", tags=["course"])
+@app.post("/course", tags=["course"], summary="Create course")
 def create_course(course: Course):
     """
     TODO
@@ -48,7 +48,7 @@ def create_course(course: Course):
     return {"course_id": course_id}
 
 
-@app.post("/course/edit", tags=["course"])
+@app.patch("/course/{courseID}", tags=["course"], summary="Edit course")
 def edit_course(course: Course):
     """
     TODO
@@ -60,7 +60,7 @@ def edit_course(course: Course):
     return {"success": success}
 
 
-@app.post("/course/delete", tags=["course"])
+@app.delete("/course/{courseID}", tags=["course"], summary="Delete course")
 def delete_course(course: Course):
     """
     TODO
@@ -72,7 +72,7 @@ def delete_course(course: Course):
     return {"success": success}
 
 
-@app.get("/course/list", tags=["course"])
+@app.get("/course/list", tags=["course"], summary="List courses")
 def list_course():
     """
     TODO
@@ -82,7 +82,7 @@ def list_course():
     return {"course_list": course_list}
 
 
-@app.post("/course/students", tags=["course"])
+@app.get("/course/{courseID}/students", tags=["course"], summary="List course students")
 def list_students(course: Course):
     """
     TODO
@@ -94,7 +94,7 @@ def list_students(course: Course):
     return {"student_list": student_list}
 
 
-@app.post("/student/create", tags=["student"])
+@app.post("/student", tags=["student"], summary="Create student")
 def create_student():
     """
     TODO
@@ -103,7 +103,7 @@ def create_student():
     """
 
 
-@app.post("/student/edit", tags=["student"])
+@app.patch("/student/{studentID}", tags=["student"], summary="Edit student")
 def edit_student():
     """
     TODO
@@ -112,7 +112,7 @@ def edit_student():
     """
 
 
-@app.post("/student/delete", tags=["student"])
+@app.delete("/student/{studentID}", tags=["student"], summary="Delete student")
 def delete_student():
     """
     TODO
@@ -121,7 +121,7 @@ def delete_student():
     """
 
 
-@app.post("/student/assign-course", tags=["student"])
+@app.patch("/student/{studentID}/course", tags=["student"], summary="Assign course")
 def assign_course():
     """
     TODO
@@ -130,7 +130,7 @@ def assign_course():
     """
 
 
-@app.post("/student/roll-call", tags=["student"])
+@app.post("/student/{studentID}/roll-call", tags=["student"], summary="Roll call")
 def roll_call():
     """
     TODO
@@ -139,7 +139,7 @@ def roll_call():
     """
 
 
-@app.post("/student/roll-call-history", tags=["student"])
+@app.get("/student/{studentID}/roll-call-history", tags=["student"], summary="Roll call history")
 def roll_call_history():
     """
     TODO
@@ -148,7 +148,7 @@ def roll_call_history():
     """
 
 
-@app.post("/teacher/create", tags=["teacher"])
+@app.post("/teacher", tags=["teacher"], summary="Create teacher")
 def create_teacher():
     """
     TODO
@@ -157,7 +157,7 @@ def create_teacher():
     """
 
 
-@app.post("/teacher/edit", tags=["teacher"])
+@app.patch("/teacher/{teacherID}", tags=["teacher"], summary="Edit teacher")
 def edit_teacher():
     """
     TODO
@@ -166,7 +166,7 @@ def edit_teacher():
     """
 
 
-@app.post("/teacher/delete", tags=["teacher"])
+@app.delete("/teacher/{teacherID}", tags=["teacher"], summary="Delete teacher")
 def delete_teacher():
     """
     TODO
