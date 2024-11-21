@@ -1,14 +1,15 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from db import Database
+from student_db import StudentDatabase
 
 app = FastAPI()
 
 db = Database("CheckIn.db")
+student_db = StudentDatabase("Student_info.db")
 
 
 class Student(BaseModel):
-    id: int
     name: str
     course_id: int
     birth: str
@@ -95,34 +96,57 @@ def list_students(course: Course):
 
 
 @app.post("/student", tags=["student"], summary="Create student")
-def create_student():
+def create_student(student: Student):
     """
     TODO
+    Add a student into database
     input: student_info
     output: student_id
     """
+    student_info = student.model_dump()
+    id = student_db.create_student(student_info)
+    return {"student_id": id}
 
 
 @app.patch("/student/{studentID}", tags=["student"], summary="Edit student")
-def edit_student():
+def edit_student(studentID: int, student: Student):
     """
     TODO
+    Edit a student information from database
     input: student_id, student_info
     output: success/fail
     """
+    student_info = student.model_dump()
+    print(student_info)
+    success = student_db.edit_student(student_info, studentID)
+    return {"success": success}
 
 
 @app.delete("/student/{studentID}", tags=["student"], summary="Delete student")
-def delete_student():
+def delete_student(studentID: int):
     """
     TODO
+    Delete a student from database
     input: student_id
     output: success/fail
     """
+    # id = student.model_dump()["id"]
+    success = student_db.delete_student(studentID)
+    return {"success": success}
+
+
+@app.get("/student/list", tags=["student"], summary="List student")
+def get_student():
+    """
+    TODO
+    return student_list
+    """
+    student_list = student_db.list_courses()
+    return {"student_list": student_list}
 
 
 @app.patch("/student/{studentID}/course", tags=["student"], summary="Assign course")
-def assign_course():
+def assign_course(student: Student):
     """
     TODO
     input: student_id, course_id

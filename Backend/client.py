@@ -7,15 +7,18 @@ import json
 import time
 
 param={
-    "name": "Yi",
-    "school": "NPTU",
-    "gender": "男",
-    "phone": "0987654321",
-    "class_num": "3"
+    "name": "Chovy",
+    "course_id": 3,
+    "birth": "1987/06/05",
+    "school_name": "NPTU",
+    "school_grade": "A",
+    "parent_name": "你爸",
+    "mobile": "0987654321",
+    "phone": ""
 }
 
-url='http://127.0.0.1:8080/insert-student'
+url='http://127.0.0.1:8000/student/2'
 
-html = requests.post(url, json.dumps(param))
+html = requests.patch(url, json=param)
 
 print(html.text)
