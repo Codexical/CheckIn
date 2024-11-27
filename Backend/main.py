@@ -50,27 +50,31 @@ def create_course(course: Course):
 
 
 @app.patch("/course/{courseID}", tags=["course"], summary="Edit course")
-def edit_course(course: Course):
+def edit_course(courseID: int, course: Course):
     """
     TODO
     input: course_id, course_info
     output: success/fail
     """
     course_info = course.model_dump()
+    if courseID != course_info["id"]:
+        return {"message": "courseID does not match course info"}
     success = db.edit_course(course_info)
-    return {"success": success}
+    return {"message": "success" if success else "fail"}
 
 
 @app.delete("/course/{courseID}", tags=["course"], summary="Delete course")
-def delete_course(course: Course):
+def delete_course(courseID: int, course: Course):
     """
     TODO
     input: course_id
     output: success/fail
     """
     id = course.model_dump()["id"]
+    if courseID != id:
+        return {"message": "courseID does not match course info"}
     success = db.delete_course(id)
-    return {"success": success}
+    return {"success": "success" if success else "fail"}
 
 
 @app.get("/course/list", tags=["course"], summary="List courses")
@@ -84,13 +88,15 @@ def list_course():
 
 
 @app.get("/course/{courseID}/students", tags=["course"], summary="List course students")
-def list_students(course: Course):
+def list_students(courseID: int, course: Course):
     """
     TODO
     input: course_id
     output: student_list
     """
     id = course.model_dump()["id"]
+    if courseID != id:
+        return {"message": "courseID does not match course info"}
     student_list = db.list_students(id)
     return {"student_list": student_list}
 
@@ -163,7 +169,11 @@ def roll_call():
     """
 
 
-@app.get("/student/{studentID}/roll-call-history", tags=["student"], summary="Roll call history")
+@app.get(
+    "/student/{studentID}/roll-call-history",
+    tags=["student"],
+    summary="Roll call history",
+)
 def roll_call_history():
     """
     TODO
