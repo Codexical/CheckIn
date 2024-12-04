@@ -1,35 +1,12 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-from db import Database
-from student_db import StudentDatabase
+from model import Student, Course, Teacher
+from db.course_db import courseDatabase
+from db.student_db import StudentDatabase
 
 app = FastAPI()
 
-db = Database("CheckIn.db")
+course_db = courseDatabase("CheckIn.db")
 student_db = StudentDatabase("CheckIn.db")
-
-
-class Student(BaseModel):
-    name: str
-    course_id: int
-    birth: str
-    school_name: str
-    school_grade: str
-    parent_name: str
-    mobile: str
-    phone: str
-
-
-class Course(BaseModel):
-    id: int
-    course_name: str
-    teacher_id: int
-    course_time: str
-
-
-class Teacher(BaseModel):
-    id: int
-    name: str
 
 
 @app.get("/")
@@ -45,7 +22,7 @@ def create_course(course: Course):
     output: course_id
     """
     course_info = course.model_dump()
-    course_id = db.create_course(course_info)
+    course_id = course_db.create_course(course_info)
     return {"course_id": course_id}
 
 
@@ -59,7 +36,7 @@ def edit_course(courseID: int, course: Course):
     course_info = course.model_dump()
     if courseID != course_info["id"]:
         return {"message": "courseID does not match course info"}
-    success = db.edit_course(course_info)
+    success = course_db.edit_course(course_info)
     return {"message": "success" if success else "fail"}
 
 
@@ -73,7 +50,7 @@ def delete_course(courseID: int, course: Course):
     id = course.model_dump()["id"]
     if courseID != id:
         return {"message": "courseID does not match course info"}
-    success = db.delete_course(id)
+    success = course_db.delete_course(id)
     return {"success": "success" if success else "fail"}
 
 
@@ -83,7 +60,7 @@ def list_course():
     TODO
     output: course_list
     """
-    course_list = db.list_courses()
+    course_list = course_db.list_courses()
     return {"course_list": course_list}
 
 
@@ -97,7 +74,7 @@ def list_students(courseID: int, course: Course):
     id = course.model_dump()["id"]
     if courseID != id:
         return {"message": "courseID does not match course info"}
-    student_list = db.list_students(id)
+    student_list = course_db.list_students(id)
     return {"student_list": student_list}
 
 
