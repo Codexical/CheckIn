@@ -1,7 +1,7 @@
 import sqlite3
 
 
-class Database:
+class courseDatabase:
     def __init__(self, db_name: str) -> None:
         self.con = sqlite3.connect(db_name, check_same_thread=False)
         self.cursor = self.con.cursor()
@@ -86,31 +86,3 @@ class Database:
         except Exception as err:
             print(f"Student listing failed: {err}")
             return []
-
-    # def create_table(self):
-    #     try:
-    #         self.cursor.execute(
-    #             "create table if not exists students(name, school, gender, phone, class_num)"
-    #         )
-    #         self.con.commit()
-    #     except Exception as err:
-    #         print(err)
-    #         return False
-    #     return True
-
-    # def insert_data(self, name, school, gender, phone, class_num):
-    #     try:
-    #         self.cursor.execute(
-    #             "insert into students values("
-    #             + f"'{name}', "
-    #             + f"'{school}', "
-    #             + f"'{gender}', "
-    #             + f"'{phone}', "
-    #             + f"{class_num})"
-    #         )
-    #         self.con.commit()
-    #     except Exception as err:
-    #         print(err)
-    #         return False
-
-    #     return True
