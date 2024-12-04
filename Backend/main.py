@@ -6,7 +6,7 @@ from student_db import StudentDatabase
 app = FastAPI()
 
 db = Database("CheckIn.db")
-student_db = StudentDatabase("Student_info.db")
+student_db = StudentDatabase("CheckIn.db")
 
 
 class Student(BaseModel):
