@@ -2,11 +2,13 @@ from fastapi import FastAPI
 from model import Student, Course, Teacher
 from db.course_db import courseDatabase
 from db.student_db import StudentDatabase
+from db.teacher_db import teacherDatabase
 
 app = FastAPI()
 
 course_db = courseDatabase("CheckIn.db")
 student_db = StudentDatabase("CheckIn.db")
+teacher_db = TeacherDatabase("CheckIn.db")
 
 
 @app.get("/")
@@ -160,27 +162,40 @@ def roll_call_history():
 
 
 @app.post("/teacher", tags=["teacher"], summary="Create teacher")
-def create_teacher():
+def create_teacher(teacher: Teacher):
     """
     TODO
     input: teacher_info
     output: teacher_id
     """
+    teacher_info = teacher.model_dump()
+    teacher_id = teacher_db.create_teacher(teacher_info)
+    return {"teacher_id": teacher_id}
 
 
 @app.patch("/teacher/{teacherID}", tags=["teacher"], summary="Edit teacher")
-def edit_teacher():
+def edit_teacher(teacherID: int, teacher: Teacher):
     """
     TODO
     input: teacher_id, teacher_info
     output: success/fail
     """
+    teacher_info = teacher.model_dump()
+    if teacherID != teacher_info["id"]:
+        return {"message": "teacherID does not match teacher info"}
+    success = teacher_db.edit_teacher(teacher_info)
+    return {"success": "success" if success else "fail"}
 
 
 @app.delete("/teacher/{teacherID}", tags=["teacher"], summary="Delete teacher")
-def delete_teacher():
+def delete_teacher(teacherID: int, teacher: Teacher):
     """
     TODO
     input: teacher_id
     output: success/fail
     """
+    id = teacher.model_dump()["id"]
+    if teacherID != id:
+        return {"message": "teacherID does not match teacher info"}
+    success = teacher_db.delete_teacher(id)
+    return {"success": "success" if success else "fail"}
