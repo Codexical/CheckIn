@@ -3,12 +3,12 @@ from model import Student, Course, Teacher
 from db.course_db import courseDatabase
 from db.student_db import StudentDatabase
 from db.teacher_db import teacherDatabase
+from db.roll_call_db import RollCallDatabase
 
 app = FastAPI()
 
 course_db = courseDatabase("CheckIn.db")
 student_db = StudentDatabase("CheckIn.db")
-teacher_db = TeacherDatabase("CheckIn.db")
 
 
 @app.get("/")
@@ -130,22 +130,26 @@ def get_student():
     return {"student_list": student_list}
 
 
-@app.patch("/student/{studentID}/course", tags=["student"], summary="Assign course")
-def assign_course(student: Student):
+@app.patch("/student/{studentID}/{courseID}", tags=["student"], summary="Assign course")
+def assign_course():
     """
     TODO
     input: student_id, course_id
     output: success/fail
     """
+    success = roll_call_db.assign_course(studentID, courseID)
+    return {"success": success}
 
 
-@app.post("/student/{studentID}/roll-call", tags=["student"], summary="Roll call")
+@app.post("/student/{studentID}/{courseID}/roll-call", tags=["student"], summary="Roll call")
 def roll_call():
     """
     TODO
     input: student_id, course_id
     output: success/fail
     """
+    success = roll_call_db.roll_call(studentID, courseID)
+    return {"success": success}
 
 
 @app.get(
@@ -159,6 +163,8 @@ def roll_call_history():
     input: student_id, course_id
     output: roll_call_history
     """
+    result = roll_call_db.roll_call_history(studentID)
+    return {"roll_call_history": result}
 
 
 @app.post("/teacher", tags=["teacher"], summary="Create teacher")
