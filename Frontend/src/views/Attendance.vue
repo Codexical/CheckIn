@@ -33,7 +33,14 @@
     <p v-else>請選擇課程以顯示學生名單。</p>
 
     <!-- 提交按鈕 -->
-    <button @click="submitAttendance">提交出席狀態</button>
+    <button class = "submit-btn" @click="submitAttendance">
+      提交出席狀態
+    </button>
+
+    <!-- 新增學生按鈕-->
+    <button @click = "goToCreateStudent" class = "create-student-btn">
+      新增學生
+    </button>
   </div>
 </template>
 
@@ -123,6 +130,10 @@ export default {
       console.log("提交出席數據：", attendanceData);
     },
 
+    goToCreateStudent(){
+      this.$router.push({ name: 'CreateStudent'});
+    },
+
     updateTime() {
       this.currentTime = new Date().toLocaleString();
     },
@@ -162,5 +173,30 @@ button {
 }
 button:hover {
   background-color: #0056b3;
+}
+.submit-btn {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+.create-student-btn {
+  display: block;
+  margin: 10px auto;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: while;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.create-student-btn:hover{
+  background-color: #45a049;
 }
 </style>
